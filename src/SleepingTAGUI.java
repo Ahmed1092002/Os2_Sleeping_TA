@@ -92,10 +92,17 @@ public class SleepingTAGUI extends JFrame {
         new Thread(() -> {
             while (true) {
                 SwingUtilities.invokeLater(() -> {
-                    tasWorkingLabel.setText("#TAs working: " + taMutex.availablePermits());
-                    tasSleepingLabel.setText("#TAs Sleeping: " + (numberOfTAs - taMutex.availablePermits()));
-                    studentsWaitingLabel.setText("#Students Waiting on chairs: " + chairsMutex.availablePermits());
-                    studentsToComeLaterLabel.setText("#Students that will come later: " + (numberOfStudents - chairsMutex.availablePermits()));                });
+                    tasWorkingLabel.setText("#TAs Sleeping: " + taMutex.availablePermits());
+                    tasSleepingLabel.setText("#TAs Working: " + (numberOfTAs - taMutex.availablePermits()));
+                    studentsWaitingLabel.setText("#Students Waiting on chairs: " + (numberOfChairs-chairsMutex.availablePermits()));
+                    studentsToComeLaterLabel.setText("#Students that will come later: " + (numberOfStudents -
+
+                       (      (numberOfChairs-chairsMutex.availablePermits())
+                            +
+                            (numberOfTAs - taMutex.availablePermits())
+                       )
+
+                    ));                });
                 try {
                     Thread.sleep(1000); // Update every second
                 } catch (InterruptedException e) {
